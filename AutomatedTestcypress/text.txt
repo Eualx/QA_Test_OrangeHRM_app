@@ -1,0 +1,89 @@
+week 8 data driven 
+week 7 Hook n page object pattern test report
+
+to custom command we need to write the function in to commands.js 
+
+// 
+
+
+
+// rcandidateM
+import Login from "../support/modules/Login";
+describe('template spec', () => {
+
+  before(() => {
+      cy.log('Starting Test Suite...');
+  });
+
+  beforeEach(() => {
+      // Ignore application errors
+      Cypress.on('uncaught:exception', (err, runnable) => {
+          return false;
+      });
+
+      // Visit login page and login before each test
+      cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
+      cy.get('[name="username"]').type('Admin');
+      cy.get('[name="password"]').type('admin123');
+      cy.get('button[type="submit"]').click();
+  });
+
+  afterEach(() => {
+      cy.log('Test case completed.');
+  });
+
+  after(() => {
+      cy.log('All tests executed.');
+  });
+
+  it('passes', () => {
+      cy.contains('Recruitment').click();
+      cy.contains('Candidates').should('be.visible');
+
+      // Click on Add button
+      cy.get('button').contains('Add').click();
+      
+      // Fill in candidate details
+      cy.get('[name="firstName"]').type('John');
+      cy.get('[name="lastName"]').type('Doe');
+      cy.get(':nth-child(3) > .oxd-grid-3 > :nth-child(1) > .oxd-input-group > :nth-child(2) > .oxd-input').type('john.doe@example.com');
+
+      // Save the candidate
+      cy.get('button[type="submit"]').click();
+      cy.contains('Successfully Saved').should('be.visible');
+      cy.contains('John Doe').should('be.visible');
+
+      // Try adding a candidate with empty fields
+      cy.contains('Recruitment').click();
+      cy.contains('Candidates').should('be.visible');
+      cy.get('button').contains('Add').click();
+      cy.get('button[type="submit"]').click();
+      cy.contains('Required').should('be.visible');
+
+      // Search for candidates using filters
+      cy.contains('Recruitment').click();
+      cy.contains('Candidates').should('be.visible');
+
+      // Apply Search Filters
+      cy.get(':nth-child(1) > .oxd-grid-4 > :nth-child(1) > .oxd-input-group > :nth-child(2) > .oxd-select-wrapper > .oxd-select-text > .oxd-select-text-input').click();
+      cy.get('.oxd-select-dropdown').contains('Software Engineer').click(); 
+
+      cy.get(':nth-child(2) > .oxd-input-group > :nth-child(2) > .oxd-select-wrapper > .oxd-select-text > .oxd-select-text-input').click();
+      cy.get('.oxd-select-dropdown').contains('Software Engineer').click(); 
+
+      cy.get(':nth-child(3) > .oxd-input-group > :nth-child(2) > .oxd-select-wrapper > .oxd-select-text > .oxd-select-text-input').click();
+      cy.get('.oxd-select-dropdown').contains('Rahul').click(); 
+
+      cy.get('input[placeholder="From"]').type('2024-02-01');
+      cy.get('input[placeholder="To"]').type('2024-04-01');
+
+      // Click Search button
+      cy.get('button').contains('Search').click({ force: true });
+
+      // Assert Search Results
+      cy.contains('No Records Found').should('be.visible');
+      cy.contains('Software Engineer').should('be.visible');
+      cy.contains('Rahul Patil').should('be.visible');
+  });
+
+});
