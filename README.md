@@ -99,4 +99,6 @@ Feel free to fork the repository and submit a pull request if you would like to 
 
 Author
 
-[Your Name][Your Email]LinkedIn: [Your LinkedIn Profile]
+Eyerusalem Alemayehu
+eualx14j@gmail.com
+LinkedIn: www.linkedin.com/in/eyerusalem-alemayehu-38992421a
